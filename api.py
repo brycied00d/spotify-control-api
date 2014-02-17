@@ -144,8 +144,13 @@ class SpotifyCtl(object):
 #    return "An error occurred."
 
 if __name__ == '__main__':
+  import os
+  current_dir = os.path.dirname(os.path.abspath(__file__))
   cherrypy.config.update({'server.socket_host': '::',
                           'server.socket_port': 8081,
                           'tools.caching.on': False})
-  cherrypy.quickstart(SpotifyCtl())
+  conf = {'/static': {'tools.staticdir.on': True,
+                      'tools.staticdir.dir': os.path.join(current_dir, 'static')
+                     }}
+  cherrypy.quickstart(SpotifyCtl(), '/', config=conf)
 
