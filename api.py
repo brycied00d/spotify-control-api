@@ -55,50 +55,50 @@ class SpotifyCtl(object):
   def previous(self):
     if self.spotify_command("Previous"):
       return 'Done. <a href="/">Back</a>'
-    return "An error ocurred."
+    return "An error occurred."
 
   @cherrypy.expose
   def pause(self):
     if self.spotify_command("Pause"):
       return 'Done. <a href="/">Back</a>'
-    return "An error ocurred."
+    return "An error occurred."
 
   @cherrypy.expose
   def playpause(self):
     if self.spotify_command("PlayPause"):
       return 'Done. <a href="/">Back</a>'
-    return "An error ocurred."
+    return "An error occurred."
 
   @cherrypy.expose
   def play(self):
     if self.spotify_command("Play"):
       return 'Done. <a href="/">Back</a>'
-    return "An error ocurred."
+    return "An error occurred."
 
   @cherrypy.expose
   def next(self):
     if self.spotify_command("Next"):
       return 'Done. <a href="/">Back</a>'
-    return "An error ocurred."
+    return "An error occurred."
 
   @cherrypy.expose
   def stop(self):
     if self.spotify_command("Stop"):
       return 'Done. <a href="/">Back</a>'
-    return "An error ocurred."
+    return "An error occurred."
 
   @cherrypy.expose
   def quit(self):
     if self.spotify_command("Quit"):
       return 'Done. <a href="/">Back</a>'
-    return "An error ocurred."
+    return "An error occurred."
 
 # Doesn't quite work, no exception but fails anyways.
 #  @cherrypy.expose
 #  def seek(self, seek):
 #    if self.spotify_command("Player.SetPosition", args=seek):
 #      return 'Done. <a href="/">Back</a>'
-#    return "An error ocurred."
+#    return "An error occurred."
 
 if __name__ == '__main__':
   cherrypy.config.update({'server.socket_port': 8081})
