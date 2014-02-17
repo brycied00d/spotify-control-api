@@ -3,6 +3,9 @@
 import cherrypy
 import dbus
 
+def str2bool(v):
+  return v.lower() in ("yes", "true", "t", "1")
+
 def strongly_expire(func):
   """Decorator that sends headers that instruct browsers and proxies not to cache.
   """
@@ -42,6 +45,16 @@ class SpotifyCtl(object):
       pass
     return False
 
+  def spotify_getnowplaying(self):
+    try:
+      bus = dbus.SessionBus()
+      player = bus.get_object('com.spotify.qt', '/')
+      iface = dbus.Interface(player, 'org.freedesktop.MediaPlayer2')
+      info = iface.GetMetadata()
+      return str(info['xesam:artist'][0]) + " - " + str(info['xesam:title'])
+    except:
+      return ""
+
   @cherrypy.expose
   def index(self):
     return """
@@ -57,6 +70,8 @@ class SpotifyCtl(object):
 <li><a href="/next">Next</a></li>
 <li><a href="/stop">Stop</a></li>
 <li><a href="/quit">Quit</a></li>
+<li><hr></li>
+<li><a href="/nowplaying">Now Playing</a></li>
 </ul>
 </body>
 </html>
@@ -109,6 +124,17 @@ class SpotifyCtl(object):
   def quit(self):
     if self.spotify_command("Quit"):
       return 'Done. <a href="/">Back</a>'
+    return "An error occurred."
+
+  @cherrypy.expose
+  @strongly_expire
+  def nowplaying(self, linkback="true"):
+    print linkback
+    np = self.spotify_getnowplaying()
+    if str2bool(linkback) and np:
+      np = np + "\n<br>" + 'Done. <a href="/">Back</a>'
+    if np:
+      return np
     return "An error occurred."
 
 # Doesn't quite work, no exception but fails anyways.
