@@ -129,11 +129,10 @@ class SpotifyCtl(object):
   @cherrypy.expose
   @strongly_expire
   def nowplaying(self, linkback="true"):
-    print linkback
     np = self.spotify_getnowplaying()
-    if str2bool(linkback) and np:
-      np = np + "\n<br>" + 'Done. <a href="/">Back</a>'
     if np:
+      if str2bool(linkback):
+        np = np + "\n<br>" + 'Done. <a href="/">Back</a>'
       return np
     return "An error occurred."
 
