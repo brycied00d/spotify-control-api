@@ -1,0 +1,6 @@
+Some Spotify/DBus/Python references used:
+https://code.google.com/p/python-spotify/source/browse/trunk/src/spotify/settings.py
+https://code.google.com/p/python-spotify/source/browse/trunk/src/spotify/handler.py
+http://blog.abhijeetr.com/2012/02/spotify-changing-and-displaying-song.html
+https://github.com/jreese/spotify-gnome/blob/master/bin/spotify
+
