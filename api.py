@@ -144,7 +144,8 @@ class SpotifyCtl(object):
 #    return "An error occurred."
 
 if __name__ == '__main__':
-  cherrypy.config.update({'server.socket_port': 8081,
+  cherrypy.config.update({'server.socket_host': '::',
+                          'server.socket_port': 8081,
                           'tools.caching.on': False})
   cherrypy.quickstart(SpotifyCtl())
 
