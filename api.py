@@ -2,6 +2,17 @@
 # vim: et sw=2 ts=2
 import cherrypy
 import dbus
+
+def strongly_expire(func):
+  """Decorator that sends headers that instruct browsers and proxies not to cache.
+  """
+  def newfunc(*args, **kwargs):
+    cherrypy.response.headers['Expires'] = 'Sun, 19 Nov 1978 05:00:00 GMT'
+    cherrypy.response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0'
+    cherrypy.response.headers['Pragma'] = 'no-cache' 
+    return func(*args, **kwargs)
+  return newfunc
+
 class SpotifyCtl(object):
   """Methods:
      u'org.mpris.MediaPlayer2.Player.OpenUri': u's',
@@ -52,42 +63,49 @@ class SpotifyCtl(object):
 """
 
   @cherrypy.expose
+  @strongly_expire
   def previous(self):
     if self.spotify_command("Previous"):
       return 'Done. <a href="/">Back</a>'
     return "An error occurred."
 
   @cherrypy.expose
+  @strongly_expire
   def pause(self):
     if self.spotify_command("Pause"):
       return 'Done. <a href="/">Back</a>'
     return "An error occurred."
 
   @cherrypy.expose
+  @strongly_expire
   def playpause(self):
     if self.spotify_command("PlayPause"):
       return 'Done. <a href="/">Back</a>'
     return "An error occurred."
 
   @cherrypy.expose
+  @strongly_expire
   def play(self):
     if self.spotify_command("Play"):
       return 'Done. <a href="/">Back</a>'
     return "An error occurred."
 
   @cherrypy.expose
+  @strongly_expire
   def next(self):
     if self.spotify_command("Next"):
       return 'Done. <a href="/">Back</a>'
     return "An error occurred."
 
   @cherrypy.expose
+  @strongly_expire
   def stop(self):
     if self.spotify_command("Stop"):
       return 'Done. <a href="/">Back</a>'
     return "An error occurred."
 
   @cherrypy.expose
+  @strongly_expire
   def quit(self):
     if self.spotify_command("Quit"):
       return 'Done. <a href="/">Back</a>'
@@ -101,6 +119,7 @@ class SpotifyCtl(object):
 #    return "An error occurred."
 
 if __name__ == '__main__':
-  cherrypy.config.update({'server.socket_port': 8081})
+  cherrypy.config.update({'server.socket_port': 8081,
+                          'tools.caching.on': False})
   cherrypy.quickstart(SpotifyCtl())
 
