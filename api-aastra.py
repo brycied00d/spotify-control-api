@@ -23,6 +23,7 @@ def strongly_expire(func):
 
 def aastra_xml(base="SoftKey:Done", text="Nothing to display."):
   cherrypy.response.headers['Refresh'] = "3; url={base:s}/".format(base=base)
+  from xml.sax.saxutils import escape
   return """<?xml version="1.0" encoding="UTF-8"?>
 <AastraIPPhoneTextScreen scrollLeft="{base:s}/previous" scrollRight="{base:s}/next"
                          scrollDown="{base:s}/volume_down" scrollUp="{base:s}/volume_up"
@@ -36,7 +37,7 @@ def aastra_xml(base="SoftKey:Done", text="Nothing to display."):
   <SoftKey index="5"><Label>Next</Label><URI>{base:s}/next</URI></SoftKey>
   <SoftKey index="6"><Label>Stop</Label><URI>{base:s}/stop</URI></SoftKey>
 </AastraIPPhoneTextScreen>
-""".format(base=base, text=text)
+""".format(base=base, text=escape(text))
 
 class SpotifyCtl(object):
   """Methods:
